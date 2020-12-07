@@ -1,0 +1,194 @@
+#pragma once
+#define _CRT_SECURE_NO_WARNINGS 1
+#include<stdio.h>
+#include<stdlib.h>
+#include<assert.h>
+typedef int SLDT;
+#define N 10
+
+typedef struct SL
+{
+	SLDT *a;
+	SLDT size;//有效数据数量
+	SLDT cap;//容量
+}SL;
+//初始化
+void SeqListInit(SL *ps)
+{
+	ps->a = (SLDT*)malloc(sizeof(SLDT) * 4);
+	if (ps->a == NULL)
+	{
+		printf("失败\n");
+		exit(-1);
+	}
+	ps->size = 0;
+	ps->cap = 4;
+}
+//打印
+void SeqListPrint(SL* ps)
+{
+	assert(ps);
+	for (int i = 0; i < ps->size; i++)
+	{
+		printf("%d ", ps->a[i]);
+	}
+	printf("\n");
+}
+//扩容检查
+void SeqListCheckCapcity(SL* ps)
+{
+	if (ps->size == ps->cap)
+	{
+		ps->cap *= 2;
+		ps->a = (SLDT*)realloc(ps->a, sizeof(SLDT) * ps->cap);
+	}
+	if (ps->a == NULL)
+	{
+		printf("扩容失败\n");
+		exit(-1);
+	}
+
+}
+//尾插
+void SeqListPushBack(struct SL* ps, SLDT x)
+{
+	assert(ps);
+
+	ps->a[ps->size] = x;
+	ps->size++;
+	SeqListCheckCapcity(ps);
+
+}
+//尾删
+void SeqListPopBack(struct SL* ps)
+{
+	assert(ps);
+	ps->size--;
+	
+}
+//头插
+void SeqListPushFront(struct SL* ps, SLDT x)
+{
+	int end = ps->size - 1;
+	while (end >= 0)
+	{
+		ps->a[end + 1]=ps->a[end];
+		--end;
+	}
+	ps->a[0] = x;
+	ps->size++;
+	SeqListCheckCapcity(ps);
+
+
+}
+//头删
+void SeqListPopFront(struct SL* ps)
+{
+	assert(ps);
+	int start = 0;
+	while (start < ps->size-1)
+	{
+		ps->a[start] = ps->a[start + 1];
+		++start;
+	}
+	ps->size--;
+}
+//任意位置插入
+void SeqListInsert(struct SL* ps, int pos, SLDT x)
+{
+	assert(pos >= 0 && pos <= ps->size);
+	//i代表数据的下标
+	for (int i = ps->size - 1; i >= pos; i--)
+	{
+		ps->a[i + 1] = ps->a[i];
+	}
+	ps->a[pos] = x;
+	SeqListCheckCapcity(ps);
+	
+}
+//任意位置删除
+void SeqListEarase(struct SL* ps, int pos)
+{
+	assert(pos >= 0 && pos <= ps->size);
+	while (pos < ps->size)
+	{
+		ps->a[pos] = ps->a[pos + 1];
+		++pos;
+	}
+	ps->size--;
+}
+//查找
+int SeqListFind(struct SL* ps, SLDT x)
+{
+	for (int i = 0; i < ps->size; i++)
+	{
+		if (ps->a[i] = x) 
+		{
+			printf("%d ",i);
+		}
+		else 
+		{
+			printf("无此数据\n");
+			break;
+		}
+	}
+}
+
+void TestSeqList1()
+{
+	SL s;
+	SeqListInit(&s);
+	//尾插
+	printf("尾插:");
+	SeqListPushBack(&s, 1);
+	SeqListPushBack(&s, 2);
+	SeqListPushBack(&s, 3);
+	SeqListPushBack(&s, 4);
+	SeqListPushBack(&s, 5);
+	SeqListPushBack(&s, 6);
+	SeqListPushBack(&s, 7);
+	SeqListPushBack(&s, 8);
+	SeqListPushBack(&s, 9);
+	SeqListPushBack(&s, 10);
+
+	SeqListPrint(&s);
+	//尾删
+	printf("尾删:");
+	SeqListPopBack(&s);
+	SeqListPopBack(&s);
+	SeqListPrint(&s);
+	//头插
+	printf("头插:");
+	SeqListPushFront(&s, 0);
+	SeqListPushFront(&s, -1);
+	SeqListPrint(&s);
+	//头删
+	printf("头删:");
+	SeqListPopFront(&s);
+	SeqListPopFront(&s);
+	SeqListPrint(&s);
+	//任意位置插入
+	printf("任意位置插入:");
+	SeqListInsert(&s, 3, 0);
+	SeqListInsert(&s, 3, 0);
+	SeqListInsert(&s, 3, 0);
+	SeqListPrint(&s);
+	//任意位置删除
+	printf("任意位置删除:");
+	SeqListEarase(&s, 2);
+	SeqListEarase(&s, 2);
+	SeqListEarase(&s, 2);
+	SeqListPrint(&s);
+	//查找
+	printf("查找:");
+	SeqListFind(&s, 1);
+
+
+}
+int main()
+{	
+
+	TestSeqList1();
+
+	返回0;
+}
