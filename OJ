@@ -1,0 +1,104 @@
+int EraseNums(int* nums, int numSize, int val)
+{
+	//src往后走，找到要删除的值便跳过，找到其他值便赋值给dst
+	int src = 0, dst = 0;
+	while (src < numSize)
+	{
+		if (nums[src] != val)
+		{
+			nums[dst] = nums[src];
+			src++;
+			dst++;
+		}
+		else
+		{
+			src++;
+		}
+	}
+	return dst;
+}
+int removeDuplicates(int* nums, int numsSize)
+{
+    if (numsSize == 0)
+    {
+        return 0;
+    }
+    int front = 0, behind = 1, dst = 0;
+    while (behind < numsSize)
+    {
+        if (nums[front] != nums[behind])
+        {
+            nums[dst] = nums[front];
+            front++;
+            behind++;
+            dst++;
+        }
+        else
+        {
+            ++front;
+            ++behind;
+        }
+    }
+    nums[dst] = nums[front];
+    dst++;
+    behind++;
+    return dst;
+}
+int* addToArrayForm(int* A, int ASize, int K, int* returnSize)
+{
+    int KSize = 0;
+    //存K
+    int KNum = K;
+    //计算K的位数
+    while (KNum)
+    {
+        ++KSize;
+        KNum /= 10;
+    }
+    //开辟比A和K中位数更大的一个的 位数+1
+    int len = ASize > KSize ? ASize : KSize;
+    int* retArr = (int*)malloc(sizeof(int) * (len + 1));
+    int Ai = ASize - 1;//被加数组A的下标
+    int reti = 0;//结果数组retArr的下标
+    int nextNum = 0;//进位
+    while (len--)
+    {
+        int a = 0;
+        if (Ai >= 0)
+        {
+            a = A[Ai];
+            Ai--;
+
+        }
+        int ret = K % 10 + a + nextNum;
+        K /= 10;
+        if (ret > 9)
+        {
+            ret -= 10;
+            nextNum = 1;
+        }
+        else
+        {
+            nextNum = 0;
+        }
+        retArr[reti] = ret;
+        ++reti;
+    }
+    if (nextNum == 1)
+    {
+        retArr[reti] = 1;
+        ++reti;
+    }
+
+    int left = 0, right = reti - 1;
+    while (left < right)
+    {
+        int tmp = retArr[left];
+        retArr[left] = retArr[right];
+        retArr[right] = tmp;
+        ++left;
+        --right;
+    }
+    *returnSize = reti;
+    return retArr;
+}
