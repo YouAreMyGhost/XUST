@@ -1,0 +1,37 @@
+>  //链表的建立
+>  struct ListNode {
+     int val;
+     struct ListNode *next;
+  };
+
+
+> bool isPalindrome(struct ListNode* head)
+{
+//找到中间节点
+    struct ListNode*two=head,*one=head;
+    while(two&&two->next)
+    {
+         one=one->next;
+         two=two->next->next;
+    }
+    //将后半段进行反转
+    struct ListNode* newhead = NULL;
+    struct ListNode* Next = NULL;
+    struct ListNode* cur = one;
+    while (cur)
+    {
+        Next = cur->next;
+        cur->next = newhead;
+        newhead = cur;
+        cur = Next;
+    }
+    //逐一比较，是回文结构返回true；不是则返回false。
+    while (head&&newhead)
+    {
+        if (head->val != newhead->val)
+        return false;
+        newhead = newhead->next;
+        head = head->next;
+    }
+    return true;
+}
