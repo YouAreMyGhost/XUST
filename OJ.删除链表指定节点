@@ -1,0 +1,29 @@
+struct ListNode* deleteNode(struct ListNode* head, int val)
+{
+    //cur定义为head，prev定义为NULL；
+    struct ListNode*cur=head;
+    struct ListNode*prev=NULL;
+    //特殊条件判定
+    if(head==NULL)
+    {
+        return NULL;
+    }
+    //特殊条件判定，如果头节点为要删除的节点
+    if(head->val==val)
+    {
+        return head->next;
+    }
+    //让prev等于cur之后的节点，cur为要删除的节点；
+    while(cur&&cur->val!=val)
+    {
+        prev=cur;
+        cur=cur->next;
+    }
+    //删除cur；
+    if(cur)
+        {
+            prev->next=cur->next;
+            free(cur);
+        }
+    return head;
+}
