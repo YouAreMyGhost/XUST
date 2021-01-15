@@ -1,0 +1,181 @@
+typedef int DataT;
+typedef struct QueneNode
+{
+	struct QueneNode* next;
+	DataT val;
+
+}QueneNode;
+
+typedef struct Quene
+{
+	QueneNode* head;
+	QueneNode* tail;
+}Quene;
+int QueneSize(Quene* pq)
+{
+	assert(pq);
+	int size = 0;
+	QueneNode* cur = pq->head;
+	while (cur)
+	{
+		++size; 
+		cur = cur->next;
+	}
+    return size;
+}
+void QueneInit(Quene* pq)
+{
+	assert(pq);
+	pq->head = pq->tail = NULL;
+}
+void QueneDestory(Quene* pq)
+{
+	QueneNode* cur = pq->head;
+	while (cur)
+	{
+		QueneNode* next = cur->next;
+		free(cur);
+		cur = next;
+	}
+	pq->head = pq->tail = NULL;
+}
+void QuenePush(Quene* pq, DataT x)
+{
+	assert(pq);
+	QueneNode* NewNode = (QueneNode*)malloc(sizeof(QueneNode));
+	if (NewNode == NULL)
+	{
+		printf("内存不足\n");
+		exit(-1);
+	}
+	NewNode->val = x;
+	NewNode->next = NULL;
+	if (pq->head == NULL)
+	{
+		pq->head = pq->tail = NewNode;
+	}
+	else
+	{
+		pq->tail->next = NewNode;
+		pq->tail = NewNode;
+	}
+}
+void QuenePop(Quene* pq)
+{
+	assert(pq);
+	assert(pq->head);
+	QueneNode* next = pq->head->next;
+	free(pq->head);
+	pq->head = next;
+	if (pq->head == NULL)
+	{
+		pq->tail = NULL;
+	}
+}
+DataT QueneFront(Quene* pq)
+{
+	assert(pq);
+	assert(pq->head);
+	return pq->head->val;
+}
+DataT QueneBack(Quene* pq)
+{
+	assert(pq);
+	assert(pq->head);
+	return pq->tail->val;
+}
+//返回0是非空，返回1是空
+int QueneEmpty(Quene* pq)
+{
+	assert(pq);
+	return pq->head == NULL ? 1 : 0;
+}
+
+typedef struct
+{
+    Quene q1;
+    Quene q2;
+} MyStack;
+
+/** Initialize your data structure here. */
+
+MyStack* myStackCreate() 
+{
+    MyStack*st=(MyStack*)malloc(sizeof(MyStack));
+    QueneInit(&st->q1);
+    QueneInit(&st->q2);
+    return st;
+}
+
+/** Push element x onto stack. */
+void myStackPush(MyStack* obj, int x) 
+{
+    if(!QueneEmpty(&obj->q1))
+    {
+        QuenePush(&obj->q1,x);
+    }
+    else
+    {
+        QuenePush(&obj->q2,x);
+    }
+}
+
+/** Removes the element on top of the stack and returns that element. */
+int myStackPop(MyStack* obj) 
+{
+    Quene*Empty=&obj->q1;
+    Quene*NoEmpty=&obj->q2;
+    if(QueneEmpty(&obj->q2))
+    {
+        Empty=&obj->q2;
+        NoEmpty=&obj->q1;
+    }
+    while(QueneSize(NoEmpty)>1)
+    {
+        QuenePush(Empty,QueneFront(NoEmpty));
+        QuenePop(NoEmpty);
+    }
+    int top=QueneFront(NoEmpty);
+    QuenePop(NoEmpty);
+    return top;
+}
+
+/** Get the top element. */
+int myStackTop(MyStack* obj) 
+{
+    if(!QueneEmpty(&obj->q1))
+    {
+        return QueneBack(&obj->q1);
+    }    
+    else
+    {
+        return QueneBack(&obj->q2);    
+    }
+}
+
+/** Returns whether the stack is empty. */
+bool myStackEmpty(MyStack* obj) 
+{
+    return QueneEmpty(&obj->q1)&&QueneEmpty(&obj->q2);
+}
+
+void myStackFree(MyStack* obj) 
+{
+    QueneDestory(&obj->q1);
+    QueneDestory(&obj->q2);
+    free(obj);
+}
+
+/**
+ * Your MyStack struct will be instantiated and called as such:
+ * MyStack* obj = myStackCreate();
+ * myStackPush(obj, x);
+ 
+ * int param_2 = myStackPop(obj);
+ 
+ * int param_3 = myStackTop(obj);
+ 
+ * bool param_4 = myStackEmpty(obj);
+ 
+ * myStackFree(obj);
+*/
