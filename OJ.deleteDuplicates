@@ -1,0 +1,47 @@
+struct ListNode* deleteDuplicates(struct ListNode* head)
+{
+    //如果链表为空或只有一个结点，直接返回头结点
+    if(head==NULL)
+    return head;
+    if(head->next==NULL)
+    return head;
+    
+    struct ListNode* fast=head->next;
+    struct ListNode* cur=head;
+    struct ListNode* slow=NULL;
+
+    while(fast)
+    {
+        //如果fast与cur的val不相等，三个节点同时向后走
+        if(fast->val!=cur->val)
+        {
+            slow=cur;
+            cur=fast;
+            fast=fast->next;
+        }
+        //fast与cur的val相等
+        else
+        {
+            //如果fast与cur的val相等，fast往后走，直至与cur的val不相等；
+            while(fast&&cur->val==fast->val)
+            {
+                fast=fast->next;
+            }
+            //如果头两个节点的val就相等，删除fast之前的节点，将fast置为新的头；
+            if(slow==NULL)
+            {
+                head=fast;
+            }
+            //删除slow与fast中间的节点
+            else
+            {
+                slow->next=fast;
+            }
+            cur=fast;
+            //如果未到NULL，继续迭代
+            if(cur)
+                fast=fast->next;
+        }
+    }
+    return head;
+}
