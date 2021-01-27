@@ -1,0 +1,11 @@
+struct TreeNode* invertTree(struct TreeNode* root)
+{
+    if(root==NULL)
+    {
+        return NULL;
+    }
+    struct TreeNode*temp=root->right;
+    root->right=invertTree(root->left);
+    root->left=invertTree(temp);
+    return root;
+}
