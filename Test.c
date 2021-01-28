@@ -72,6 +72,14 @@ void HeapSortTest()
 	printf("堆排序   :");
 	Print(a, n);
 }
+void MergeSortNonRTest()
+{
+	int a[] = { 11,7,8,3,4,1,0,12,86,23,9,115,58,66 };
+	int n = sizeof(a) / sizeof(int);
+	MergeSortNonR(a, n);
+	printf("归并排序2:");
+	Print(a, n);
+}
 // 测试排序的性能对比
 void TestOP()
 {
@@ -142,6 +150,7 @@ int main()
 	QuickSortTest2();
 	QuickSortTest3();
 	HeapSortTest();
+	MergeSortNonRTest();
 
 	TestOP();
 	return 0;

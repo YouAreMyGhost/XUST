@@ -327,13 +327,54 @@ void MergeSort(int* a, int n)
 	free(tmp);
 }
 // 归并排序非递归实现
+void MergeArr(int* a, int begin1, int end1, int begin2, int end2, int* tmp)
+{
+	int left = begin1, right = end2;
+	int index = begin1;
+	while (begin1 <= end1 && begin2 <= end2)
+	{
+		if (a[begin1] < a[begin2])
+			tmp[index++] = a[begin1++];
+		else
+			tmp[index++] = a[begin2++];
+	}
+
+	while (begin1 <= end1)
+		tmp[index++] = a[begin1++];
+
+	while (begin2 <= end2)
+		tmp[index++] = a[begin2++];
+
+	// 把归并好的再tmp的数据在拷贝回到原数组
+	for (int i = left; i <= right; ++i)
+		a[i] = tmp[i];
+}
 void MergeSortNonR(int* a, int n)
 {
-	
+	assert(a);
+	int* tmp = malloc(sizeof(int) * n);
+	int gap = 1;
+	while (gap < n)
+	{
+		for (int i = 0; i < n; i += 2 * gap)
+		{
+			// [i,i+gap-1] [i+gap, i+2*gap-1]
+			int begin1 = i, end1 = i + gap - 1;
+			int begin2 = i + gap, end2 = i + 2 * gap - 1;
+			// 1、合并时只有第一组,第二组不存在，就不需要合并
+			if (begin2 >= n)
+				break;
+
+			// 2、合并时第二组只有部分数据，需要修正end2边界
+			if (end2 >= n)
+				end2 = n - 1;
+
+			MergeArr(a, begin1, end1, begin2, end2, tmp);
+		}
+		//PrintArray(a, n);
+		gap *= 2;
+	}
+	free(tmp);
 }
 // 计数排序
-void CountSort(int* a, int n)
-{
-	assert(a);
-	
-}
+void CountSort(int* a, int n);
