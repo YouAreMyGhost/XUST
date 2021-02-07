@@ -1,0 +1,41 @@
+void Swap(int* p, int* q)
+{
+	int tmp = *q;
+	*q = *p;
+	*p = tmp;
+}
+void ShellSort(int* a, int n)
+{
+	assert(a);
+	int gap = n;
+	while (gap > 1)
+	{
+		gap = gap / 3 + 1;
+		for (int i = 0; i < n - gap; i++)
+		{
+			int end = i;
+			int tmp = a[end + gap];
+			while (end >= 0)
+			{
+				if (tmp < a[end])
+				{
+					//a[end+1] = a[end];
+					Swap(&a[end], &a[end + gap]);
+					end -= gap;
+				}
+				else
+				{
+					break;
+				}
+			}
+			//a[end + 1] = tmp;
+		}
+	}
+	return a;
+}
+int* sortArray(int* nums, int numsSize, int* returnSize)
+{
+    ShellSort(nums,numsSize);
+    *returnSize=numsSize;
+    return nums;
+}
