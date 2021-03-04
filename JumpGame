@@ -1,0 +1,16 @@
+bool canJump(int* nums, int numsSize)
+{
+    int finalSize=0;
+    for(int i=0;i<numsSize;i++)
+    {
+        if(i<=finalSize)
+        {
+            int nextSize=i+nums[i];
+            if(nextSize>finalSize)
+            {
+                finalSize=nextSize;
+            }
+        }
+    }
+    return numsSize-1<=finalSize;
+}
