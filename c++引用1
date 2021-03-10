@@ -1,0 +1,63 @@
+#include <iostream>
+using namespace std;
+
+//extern "C" int Add(int a, int b)
+//{
+//	return a + b;
+//}
+//函数之间的引用y与重载
+void Swap(int* pa, int* pb)
+{
+	int tmp = *pa;
+	*pa = *pb;
+	*pb = tmp;
+}
+void Swap(int a, int b)
+{
+	int tmp = a;
+	a = b;
+	b = tmp;
+}
+//
+int& Add(int a, int b)
+{
+	static int c = a + b;
+	//返回变量出了当前函数的作用域便销毁，不能用引用返回，用static可解决
+	return c;
+}
+int main()
+{
+	int a = 1, b = 2;
+	Swap(&a, &b);
+	Swap(a, b);
+	int& ret = Add(1, 2);
+	Add(3, 4);
+	//printf("a");
+	cout << "Add(1, 2)is " << ret << endl;
+	return 0;
+}
+/*int main()
+{
+	//cout << Add(1, 2);
+	int a = 10;
+	int& b = a;
+	a = 20;
+	b = 30;
+	
+	int x = 1;
+	//b不是x的引用，是赋值
+	b = x;
+	//定义const常量时，引用也要加const
+	const int i = 100;
+	const int& j = i;
+	//权限可以缩小，不能放大
+	int m = 100;
+	const int& n = i;
+	//可以引用常量，需要加const；
+	const int& p = 10;
+	//整形与浮点数之间可以隐式类型转换  
+	double dd = 3.14;
+	int ee = dd;
+
+	return 0;
+}*/
