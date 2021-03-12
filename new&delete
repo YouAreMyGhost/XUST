@@ -1,0 +1,68 @@
+#include <iostream>
+using namespace std;
+
+typedef struct ListNode
+{
+    ListNode* _next;
+    ListNode* _prev;
+    int _val;
+
+}ListNode;
+
+template<class T>
+class Stack
+{
+public:
+    Stack(int capacity = 4)
+        :_a(new T[4])
+        , _top(0)
+        , _capacity(4)
+    {}
+
+    ~Stack()
+    {
+        delete[] _a;
+        _a = nullptr;
+        _capacity = _top = 0;
+    }
+
+    void Push(const T& x);
+
+private:
+    T* a ;
+    int _top;
+    int _capacity;
+};
+template<class T>
+void Stack<T>::Push(const T& x)
+{
+
+}
+//void Swap(T& x, T& y)
+//{
+//    T tmp = x;
+//    x = y;
+//    y = tmp;
+//}
+//T Add(T a, T b)
+//{
+//    return a + b;
+//}
+//operator new&operator delete函数时C++申请/释放内存的库函数，不是重载，用法与malloc&free相同
+int main()
+{
+    int a = 2;
+    double b = 3;
+    cout << Add(1.1, 2.2) << endl;
+    cout << Add<int>(a, b) << endl;
+
+    /*int a = 1, b = 2;
+    char c = 'A', d = 'B';
+    double aa = 1.11, bb = 2.22;
+    Swap(a, b);
+    Swap(c, d);
+    Swap(aa, bb);*/
+    //cout << a << " " << b << endl << c << " " << d << endl << aa << " " << bb << endl;
+    return 0;
+}
+
