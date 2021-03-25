@@ -1,0 +1,16 @@
+class Solution 
+{
+public:
+    void rotate(vector<int>& nums, int k) 
+    {
+        int len=nums.size();
+        //int* arr=(int*)malloc((len+k)*sizeof(int));
+        vector<int> arr(len);
+
+        for(int i=0;i<len;i++)
+        {
+            arr[(i+k)%len]=nums[i];
+        }
+        nums=arr;
+    }
+};
