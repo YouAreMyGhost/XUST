@@ -1,0 +1,23 @@
+class Solution 
+{
+public:
+    int lengthOfLastWord(string s) 
+    {
+        int len=s.size()-1;
+        while (len >= 0 && s[len] == ' ')
+        {
+            --len;
+        }
+
+        //string::iterator it=s.begin();
+        int n=0;
+        for(int i=len;i>=0;i--)
+        {
+            if(s[i]!=' ')
+            n++;
+            if(s[i]==' ')
+            break;
+        }
+        return n; 
+    }
+};
