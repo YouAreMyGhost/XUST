@@ -1,0 +1,128 @@
+#include <iostream>
+#include<string>
+using namespace std;
+
+class T
+{
+private:
+    T* _str;
+    int _size;
+    int capacity;
+
+public:
+      
+
+};
+//int main()
+//{
+//    //不推荐使用insert，在头插与中间插入时需要移动数据，效率不高
+//    //insert的常见操作
+//    string s1("1234");
+//    s1.insert(s1.begin(), '0');//在s1的begin（即索引为0）处，插入字符‘0’；
+//    cout << s1 << endl;
+//
+//    string s2("1234");
+//    s2.insert(0, 5, '0');//在s1的begin（即索引为0）处，插入5个字符‘0’；
+//    cout << s2 << endl;
+//
+//    string s3("1234");
+//    s3.insert(0 ,"00000");//在s1的begin（即索引为0）处，插入字符串‘00000’；
+//    cout << s3 << endl;
+//
+//    string s4("1234");
+//    s4.insert(2, "xxxxx");//在s1的即索引为2处，插入字符串‘xxxxx’；
+//    cout << s4 << endl;
+//    //在csdn官网的协议之后插入域名
+//    //+= 运算符重载
+//    string url = "http://";
+//    string urlappend = url;
+//    urlappend += "blog.csdn.net/";
+//    cout << url << endl << urlappend << endl;
+//      
+//    return 0;
+//}
+
+//int main()
+//{
+//    ////打印文件名的后缀
+//    //string f1 = "string.cpp";
+//    //string f2 = "string.c";
+//    //string f3 = "string.exe.zip";
+//    ////寻找f1中字符'.'出现的位置
+//    //size_t pos1 = f1.find('.');
+//
+//    ////从字符串最后开始寻找f3中字符'.'第一次出现的位置
+//    ////size_t pos3 = f3.rfind('.');
+//    ////寻找f3中字符'.'最后一次出现的位置；与上面一行代码作用相同
+//    //size_t pos3 = f3.find_last_of('.');
+//
+//    //if (pos1 != string::npos)
+//    //{
+//    //    //从pos1的位置之后，打印f1.size() - pos1个字符
+//    //    cout << f1.substr(pos1,f1.size() - pos1) << endl;
+//    //}
+//    //if (pos3 != string::npos)
+//    //{
+//    //    //从pos3的位置之后，打印字符至结束
+//    //    cout << f3.substr(pos3) << endl;
+//    //}
+//
+//    //string url = "https://so.csdn.net/so/search/";
+//    //cout << url << endl;
+//    ////寻找url中’：‘出现的位置
+//    //size_t posU1 = url.find(':');
+//    //if (posU1 != string::npos)
+//    //{
+//    //    cout << url.substr(0,posU1) << endl;
+//    //}
+//    ////在posU1+3位置之后寻找’/‘第一次出现的位置
+//    //size_t posU2 = url.find('/',posU1+3);
+//    //if (posU2 != string::npos)
+//    //{
+//    //    cout << url.substr(posU1 + 3, posU2 - posU1 - 3) << endl;
+//    //}
+//    //cout << url.substr(posU2 + 1,string::npos) << endl;
+//
+//    ////erase
+//    ////为不破坏url本身，拷贝一份进行删除
+//    //string copyurl = url;
+//    ////从0下标开始删除posU1 + 3个字符
+//    //cout << copyurl.erase(0, posU1 + 3) << endl;
+//    //
+//    //return 0;
+//    //寻找字符串s中‘2’第一次出现的位置
+//    string s("012342345");
+//    size_t pos1 = s.find('2');
+//    //pos2位置为pos1+1位置之后‘2’第一次出现的位置
+//    size_t pos2 = s.find('2',pos1+1);
+//    if (pos1 != string::npos)
+//    {
+//        //从pos1的位置之后，打印2个字符
+//        cout << s.substr(pos1, 2) << endl;
+//    }
+//    if (pos2 != string::npos)
+//    {
+//        //从pos2的位置之后，打印至字符串结束
+//        cout << s.substr(pos2) << endl;
+//    }
+//    if (pos1 != string::npos)
+//    {
+//        //从pos1的位置之后，打印至字符串结束
+//        cout << s.substr(pos1) << endl;
+//    }
+//    string copyS = s;
+//    //从0下标开始删除3个字符
+//    cout << copyS.erase(0, 3) << endl;
+//    return 0;
+//}
+
+int main()
+{
+    string s1("321");
+    string s2("321");
+    cout << (s1 == s2) << endl;
+    cout << ("123" == s2) << endl;
+    cout << (s1 == "456") << endl;
+
+    return 0;
+ }
