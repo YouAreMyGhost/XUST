@@ -1,0 +1,41 @@
+class Solution 
+{
+public:
+    bool isLetter(char ch)
+    {
+        if((ch>='0'&&ch<='9')||
+        (ch>='a'&&ch<='z')||
+        (ch>='A'&&ch<='Z'))
+        {
+            return true;
+        }
+        return false;
+    } 
+    bool isPalindrome(string s) 
+    {
+        for(auto &e:s)
+        {
+            if(e>='A'&&e<='Z')
+                e+=32;
+        }
+        int len=s.size();
+        int left=0,right=len-1;
+        while(left<right)
+        {
+            while(left<right && !isLetter(s[right]))
+            {
+                --right;
+            }
+            while(left<right && !isLetter(s[left]))
+            {
+                ++left;
+            }
+            if(s[left]!=s[right])
+            {
+                return false;
+            }
+            ++left;--right;
+        }
+        return true;
+    }
+};
