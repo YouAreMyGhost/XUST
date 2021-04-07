@@ -1,0 +1,56 @@
+#include<stdio.h>                                                                    
+#include<unistd.h>
+#include<string.h>
+//当实际读取时，如果读取条件不满足，读取端会阻塞（管道为空）
+//当实际写入时，如果写入条件不满足，写入端会阻塞（管道已写满）
+//如果写端不写且占用文件描述符，读端不会阻塞
+//如果读端关闭，写端进程可能会被系统直接杀掉
+int main()
+{
+   //文件描述符数组,pipefd[0]为读，pipefd[1]为写
+   int pipefd[2]={0};
+   pipe(pipefd);
+   //创建进程
+   pid_t id=fork();
+   if(id==0)
+   {
+     //child,write
+     //防止读写同时进行，关闭读区
+     close(pipefd[0]);
+     const char *msg="I am child!\n";
+     int count=0;
+     while(1)
+     {
+       //write函数，返回值为：数组下标，字符串，字符串长度
+       write(pipefd[1],msg,strlen(msg));
+       //写端每隔一秒写入一次
+       sleep(1);
+       printf("child:%d\n",count++);
+     }
+   }
+   else
+   {
+     //father,read
+     close(pipefd[1]); 
+     char buffer[64];
+     while(1)
+     {
+       //关闭写区
+       close(pipefd[1]);                                                              
+       //read函数，返回值：数组下标(从哪读)，字符数组（读到哪），常量（读多少）
+       ssize_t s=read(pipefd[0],buffer,sizeof(buffer)-1);
+       if(s>0)
+       {
+         //以‘0’结尾
+         buffer[s]=0;
+         //父进程读取子进程所写的消息
+         printf("father get message:%s\n",buffer);
+         //sleep(1);
+       }
+     }
+   }
+return 0;
+}  
+————————————————
+版权声明：本文为CSDN博主「You are my ghost」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/qq_43745617/article/details/115491890
