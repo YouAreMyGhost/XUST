@@ -1,0 +1,167 @@
+#pragma once
+#include<iostream>
+#include<assert.h>
+#include<algorithm>
+#include<list>
+#include<string>
+using namespace std;
+namespace mbf
+{
+	template<class T>
+	class vector
+	{
+	public:
+		typedef T* iterator;
+
+		iterator begin()
+		{
+			return _start;
+		}
+		iterator end()
+		{
+			return _finish;
+		}
+		//构造&&初始化
+		vector()
+			:_start(nullptr)
+			, _finish(nullptr)
+			, _endofstorage(nullptr)
+		{}
+
+		~vector()
+		{
+			delete[] _start;
+			_start = _finish = _endofstorage = nullptr;
+		}
+		//返回空间大小
+		size_t capacity()
+		{
+			return _endofstorage - _start;
+		}
+		//返回有效数据大小
+		size_t size()
+		{
+			return _finish - _start;
+		}
+		//返回pos位置
+		T& operator[](size_t pos)
+		{
+			assert(pos < size());
+			return _start[pos];
+		}
+		//增加数据
+		void resize(size_t n,const T& val=T())
+		{
+			if (n > capacity())
+				reserve(n);
+			else
+			{
+				if (n < size())
+				{
+					_finish = _start + n;
+				}
+				else
+				{
+					while (_finish != _start + n)
+					{
+						*_finish = val;
+						++_finish;
+					}
+				}
+			}
+		}
+		void pop_back()
+		{
+			asset(_finish > _start);
+			--_finish;
+		}
+		//pos前插入
+		iterator insertFront(iterator pos, const T& x)
+		{
+			assert(pos >= _start && pos <= _finish);
+			//提前保存pos的相对位置，可解决迭代器失效问题
+			size_t posi = pos - _start;
+			//可能在扩容检查之后pos还在原来的空间，pos变成野指针，迭代器失效
+			check_capacity();
+			pos = _start + posi;
+			iterator end = _finish - 1;
+			while (end >= pos)
+			{
+				*(end + 1) = *end;
+				--end;
+			}
+			*pos = x;
+			++_finish;
+			return pos;
+		}
+		//pos后插入
+		iterator insertBack(iterator pos, const T& x) 
+		{
+			assert(pos >= _start && pos <= _finish);
+			size_t posi = pos - _start + 1;
+
+			check_capacity();
+			pos = _start + posi;
+			iterator end = _finish;
+			while (end > pos)			
+			{
+				*(end + 1) = *end;
+				--end;
+			}
+			*pos = x;
+			++_finish;
+			return pos;
+		}
+		//pos删除
+		iterator erase(iterator pos)
+		{
+			////如果erase最后一个位置数据，it会变成非法指针，迭代器失效
+			assert(pos >= _start && pos < _finish);
+			iterator it = pos + 1;
+			while (it != _finish)
+			{
+				*(it - 1) = *it;
+				++it;
+			}
+			--_finish;
+			return pos;
+		}
+		//扩容
+		void reserve(size_t n)
+		{
+			if (n > capacity())
+			{
+				size_t sz = size();
+				//size_t cpy = capacity();
+				T* tmp = new T[n];
+				memcpy(tmp, _start, sizeof(T) * size());
+				delete[] _start;
+				_start = tmp;
+				_finish = _start + sz;
+				_endofstorage = _start + n;
+			}
+		}
+		//扩容检查
+		void check_capacity()
+		{
+			if (_finish == _endofstorage)
+			{
+				size_t newcapacity = capacity() == 0 ? 4 : capacity() * 2;
+				reserve(newcapacity);
+			}
+		}
+		//尾插
+		void push_back(const T& x)
+		{
+			check_capacity();
+			*_finish = x;
+			_finish++;
+		}
+	private:
+		iterator _start;
+		//有效数据结尾
+		iterator _finish;
+		//空间结尾
+		iterator _endofstorage;
+	};
+}
